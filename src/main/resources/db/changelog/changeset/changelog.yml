@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-enum-types
+      author: Pavel Gurevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: ./sql/01.create-enum-types.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: create-topics-table
+      author: Pavel Gurevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: ./sql/02.create-topics-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: create-question-types-table
+      author: Pavel Gurevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: ./sql/03.create-question-types-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: create-questions-table
+      author: Pavel Gurevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: ./sql/04.create-questions-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: create-answers-table
+      author: Pavel Gurevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: ./sql/05.create-answers-table.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: create-explanations-table
+      author: Pavel Gurevich
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: ./sql/06.create-explanations-table.sql
+            relativeToChangelogFile: true
