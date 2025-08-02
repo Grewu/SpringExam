@@ -9,8 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    Page<Question> findAllByTopicId(Long topicId, Pageable pageable);
-
-    @Query("SELECT q FROM Question q JOIN q.topic t WHERE t.name = 'TESTING'")
-    Page<Question> findAllTestingQuestions(Pageable pageable);
+    boolean existsByQuestionText(String questionText);
 }

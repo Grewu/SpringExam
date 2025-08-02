@@ -1,4 +1,4 @@
-package com.example.springexam.service;
+package com.example.springexam.service.loader;
 
 import com.example.springexam.service.api.DocumentLoader;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,12 @@ public class JsoupDocumentLoader implements DocumentLoader {
     @Value("classpath:templates/test1.html")
     private Resource resourceFile;
 
-    public Document loadDocument(String url) throws IOException {
-        return Jsoup.parse(resourceFile.getFile());
+    public Document loadDocument(String url) {
+        try {
+            return Jsoup.parse(resourceFile.getFile());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -6,15 +6,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "explanations")
 @Data
+@Entity
+@Builder
+@Table(name = "explanations")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Explanation {
@@ -26,6 +28,7 @@ public class Explanation {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
+    @Lob
     @Column(name = "content", nullable = false)
     private String content;
 }

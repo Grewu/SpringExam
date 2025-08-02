@@ -3,23 +3,18 @@ package com.example.springexam.handler;
 
 import com.example.springexam.exception.AbstractExceptionMessageException;
 import com.example.springexam.exception.ExceptionMessage;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * The {@code GlobalHandlerAdvice} class is a global exception handler for REST controllers,
- * responsible for managing and handling exceptions thrown during the processing of web requests.
- *
- * <p>This class leverages Spring's {@code @RestControllerAdvice} to provide centralized exception
- * handling across all controllers. It captures specific exceptions and returns structured error
- * responses to the clients.
- */
+
 @RestControllerAdvice
 public class GlobalHandlerAdvice {
 
@@ -29,6 +24,12 @@ public class GlobalHandlerAdvice {
         .map(AbstractExceptionMessageException::getExceptionMessage)
         .map(exceptionMessage -> ResponseEntity.status(e.getStatusCode()).body(exceptionMessage))
         .orElseThrow();
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public Map<String, String> handleValidationErrors(MethodArgumentNotValidException ex) {
+    return ex.getBindingResult().getFieldErrors().stream()
+            .collect(Collectors.toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
   }
 
 }

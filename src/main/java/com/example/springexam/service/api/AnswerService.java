@@ -2,7 +2,11 @@ package com.example.springexam.service.api;
 
 import com.example.springexam.model.dto.request.AnswerRequest;
 import com.example.springexam.model.dto.response.AnswerResponse;
+import com.example.springexam.model.entity.Answer;
 import com.example.springexam.service.AbstractService;
 
-public interface AnswerService extends AbstractService<Long, AnswerRequest, AnswerResponse> {
+import java.util.List;
+
+public interface AnswerService extends AbstractService<Long, Answer> {
+    List<Answer> createAll(List<Answer> answers);
 }

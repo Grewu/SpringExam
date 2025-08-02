@@ -6,17 +6,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "answers")
 @Data
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "answers")
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +28,7 @@ public class Answer {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
+    @Lob
     @Column(name = "answer_text", nullable = false)
     private String answerText;
 

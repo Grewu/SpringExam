@@ -1,4 +1,4 @@
-package com.example.springexam.service.api;
+package com.example.springexam.service.parser.api;
 
 import com.example.springexam.model.ParsedInfo;
 
