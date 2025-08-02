@@ -8,10 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface ExplanationRepository extends JpaRepository<Explanation, Long> {
-
-    // Проверяет, существует ли объяснение для указанного вопроса
-    boolean existsByQuestionId(Long questionId);
-
-    // Находит объяснение по ID вопроса (если существует)
-    Optional<Explanation> findByQuestionId(Long questionId);
 }

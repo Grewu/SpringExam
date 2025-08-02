@@ -1,7 +1,5 @@
 package com.example.springexam.service.api;
 
-import com.example.springexam.model.dto.request.QuestionRequest;
-import com.example.springexam.model.dto.response.QuestionResponse;
 import com.example.springexam.model.entity.Question;
 import com.example.springexam.service.AbstractService;
 

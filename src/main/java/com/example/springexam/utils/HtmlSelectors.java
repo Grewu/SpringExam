@@ -16,13 +16,16 @@ public final class HtmlSelectors {
 
     public static final class Answer {
         public static final String CONTAINER = ".answer-container";
-        public static final String TEXT = "[id='answer-text']";
+        public static final String TEXT = "div.answer-result-pane--answer-correct--PLOEU";
+        public static final String BLOCK = "div.result-pane--answer-result-pane--Niazi";
+        public static final String IS_CORRECT = "span.result-pane--answer-by-user-label--PSH86";
+        public static final String ANSWER_ID = "div[id=answer-text]";
         public static final String CORRECT_MARKER = ".correct-answer";
     }
 
     public static final class Explanation {
-        public static final String CONTAINER = "#overall-explanation";
-        public static final String DETAILS = ".explanation-details";
+        public static final String CONTAINER = "div[class*='overall-explanation-pane--overall-explanation']";
+        public static final String DETAILS = "div.ud-text-md.rt-scaffolding";
     }
 
     public static final class Topic {

@@ -1,6 +1,6 @@
 package com.example.springexam.controller;
 
-import com.example.springexam.model.ParsedInfo;
+import com.example.springexam.model.dto.response.ParsedInfo;
 import com.example.springexam.model.dto.request.SearchDto;
 import com.example.springexam.service.parser.ExamParserService;
 import jakarta.validation.Valid;

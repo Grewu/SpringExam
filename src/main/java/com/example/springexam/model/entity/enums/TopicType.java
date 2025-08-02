@@ -3,7 +3,6 @@ package com.example.springexam.model.entity.enums;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Getter
 public enum TopicType {
@@ -12,6 +11,9 @@ public enum TopicType {
   SECURITY("Security"),
   SPRING_AOP("Spring AOP"),
   SPRING_MVC("Spring MVC"),
+  SPRING_SECURITY("Spring security"),
+  SPRING_BOOT("Spring Boot"),
+  SPRING_BOOT_ACTUATOR("Spring Boot Actuator"),
   DATA_MANAGEMENT("Data Management"),
   CONFIGURATION("Configuration"),
   SPRING_ACTUATOR("Spring Actuator");

@@ -1,4 +1,4 @@
-package com.example.springexam.model;
+package com.example.springexam.model.dto.response;
 
 
 import lombok.Builder;
@@ -10,9 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class ParsedInfo {
-
     private String url;
-
     private String question;
     private List<String> answer;
     private String explanation;

@@ -2,7 +2,6 @@ package com.example.springexam.service.impl;
 
 import com.example.springexam.model.entity.Answer;
 import com.example.springexam.repository.AnswerRepository;
-import com.example.springexam.repository.QuestionRepository;
 import com.example.springexam.service.api.AnswerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +18,6 @@ import java.util.List;
 public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
-
 
     @Override
     public Answer create(Answer t) {
@@ -28,7 +25,6 @@ public class AnswerServiceImpl implements AnswerService {
     }
     @Override
     public List<Answer> createAll(List<Answer> answers) {
-        log.info("ANSWERS TO SAVE");
         return answerRepository.saveAll(answers);
     }
 
