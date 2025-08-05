@@ -33,6 +33,13 @@ public class AnswerServiceImpl implements AnswerService {
         return null;
     }
 
+    public List<String> getAnswerTextsByQuestionId(Long questionId) {
+        return answerRepository.findByQuestionId(questionId)
+                .stream()
+                .map(Answer::getAnswerText)
+                .toList();
+    }
+
     @Override
     public Answer getById(Long id) {
         return null;
@@ -44,9 +51,6 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public void delete(Long id) {
-
-    }
-
+    public void delete(Long id) {}
 
 }

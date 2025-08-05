@@ -24,14 +24,13 @@ public class HtmlParserService implements ParseService {
     private final EntityParser<Explanation, Question> explanationParser;
 
     @Override
-    public ParsedInfo parseHtml(Element container, String url) {
+    public ParsedInfo parseHtml(Element container) {
         Topic topic = topicParser.parseAndSave(container, null);
         Question question = questionParser.parseAndSave(container, topic);
         List<Answer> answers = answerParser.parseAndSave(container, question);
         Explanation explanation = explanationParser.parseAndSave(container, question);
 
         return ParsedInfo.builder()
-                .url(url)
                 .question(question.getQuestionText())
                 .answer(answers.stream().map(Answer::getAnswerText).toList())
                 .explanation(explanation.getContent())

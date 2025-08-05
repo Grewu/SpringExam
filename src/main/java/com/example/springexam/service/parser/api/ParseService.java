@@ -4,5 +4,5 @@ import com.example.springexam.model.dto.response.ParsedInfo;
 import org.jsoup.nodes.Element;
 
 public interface ParseService {
-    ParsedInfo parseHtml(Element container, String url);
+    ParsedInfo parseHtml(Element container);
 }

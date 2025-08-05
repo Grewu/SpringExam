@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AnswerService extends AbstractService<Long, Answer> {
     List<Answer> createAll(List<Answer> answers);
+    List<String> getAnswerTextsByQuestionId(Long questionId);
 }

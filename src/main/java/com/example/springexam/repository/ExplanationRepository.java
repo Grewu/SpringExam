@@ -8,4 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface ExplanationRepository extends JpaRepository<Explanation, Long> {
+    Explanation findByQuestionId(Long id);
 }

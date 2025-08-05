@@ -16,6 +16,19 @@ spring:
     password:
     enabled: true
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs      
+  swagger-ui:
+    path: /swagger-ui.html
+logging:
+  level:
+    root: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n"
+  file:
+    name: app.log
+    path: ./logs
 
 server:
   port: 9011

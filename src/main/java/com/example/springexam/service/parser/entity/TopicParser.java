@@ -8,6 +8,7 @@ import com.example.springexam.utils.HtmlSelectors;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class TopicParser implements EntityParser<Topic, Void> {
     private final TopicService topicService;
 
     @Override
+    @Transactional
     public Topic parseAndSave(Element container, Void unused) {
         return topicService.create(buildTopic(container));
     }
@@ -24,7 +26,6 @@ public class TopicParser implements EntityParser<Topic, Void> {
     private Topic buildTopic(Element container) {
         return Topic.builder()
                 .name(TopicType.fromDisplayName(extractTopicText(container)))
-                //TODO ?  что такое  description
                 .description("description")
                 .build();
     }

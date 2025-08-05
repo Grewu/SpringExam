@@ -25,7 +25,11 @@ public class ExplanationServiceImpl implements ExplanationService {
     public Page<Explanation> getAll(Pageable pageable) {
         throw new UnsupportedOperationException("getAll not implemented yet");
     }
-
+    @Override
+    public String getExplanationContent(Long questionId) {
+        Explanation explanation = explanationRepository.findByQuestionId(questionId);
+        return explanation != null ? explanation.getContent() : "Explanation not found";
+    }
     @Override
     public Explanation getById(Long id) {
         throw new UnsupportedOperationException("getById not implemented yet");
@@ -40,4 +44,6 @@ public class ExplanationServiceImpl implements ExplanationService {
     public void delete(Long id) {
         throw new UnsupportedOperationException("delete not implemented yet");
     }
+
+
 }

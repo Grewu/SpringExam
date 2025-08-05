@@ -1,14 +1,14 @@
 package com.example.springexam.model.dto.response;
 
 
+import com.example.springexam.model.entity.Answer;
 import lombok.Builder;
-import lombok.Data;
 
 import java.util.List;
 
 
 @Builder
-public record  ParsedInfo(
+public record ExamDataResponse(
         String question,
         List<String> answer,
         String explanation,

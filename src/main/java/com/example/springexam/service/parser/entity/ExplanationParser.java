@@ -8,6 +8,7 @@ import com.example.springexam.utils.HtmlSelectors;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class ExplanationParser implements EntityParser<Explanation, Question> {
     private final ExplanationService explanationService;
 
     @Override
+    @Transactional
     public Explanation parseAndSave(Element container, Question question) {
         return explanationService.create(buildExplanation(container, question));
     }

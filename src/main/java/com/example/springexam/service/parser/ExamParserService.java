@@ -18,23 +18,16 @@ public class ExamParserService implements DocumentParser {
     private final DocumentLoader documentLoader;
     private final ParseService htmlParser;
     @Override
-    public List<ParsedInfo> parse(String url)  {
+    public List<ParsedInfo> parse()  {
         List<Document> document = documentLoader.loadAllDocuments();
-        return parseDocument(document, url);
+        return parseDocument(document);
     }
 
-    private List<ParsedInfo> parseDocument(Document document, String url) {
-        return document.select(HtmlSelectors.Question.CONTAINER).stream()
-                .map(container -> htmlParser.parseHtml(container, url))
-                .peek(info -> log.debug("Parsed question: {}", info.getQuestion()))
-                .toList();
-    }
-
-    private List<ParsedInfo> parseDocument(List<Document> documents, String url) {
+    private List<ParsedInfo> parseDocument(List<Document> documents) {
         return documents.stream()
                 .flatMap(document -> document.select(HtmlSelectors.Question.CONTAINER).stream())
-                .map(container -> htmlParser.parseHtml(container, url))
-                .peek(info -> log.debug("Parsed question: {}", info.getQuestion()))
+                .map(htmlParser::parseHtml)
+                .peek(info -> log.debug("Parsed question: {}", info.question()))
                 .toList();
 
     }

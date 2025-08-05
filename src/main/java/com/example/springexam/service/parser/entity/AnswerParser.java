@@ -8,6 +8,7 @@ import com.example.springexam.utils.HtmlSelectors;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class AnswerParser implements EntityParser<List<Answer>, Question> {
     private final AnswerService answerService;
 
     @Override
+    @Transactional
     public List<Answer> parseAndSave(Element container, Question question) {
         return answerService.createAll(buildAnswers(container, question));
     }
@@ -53,8 +55,7 @@ public class AnswerParser implements EntityParser<List<Answer>, Question> {
     }
 
     private boolean isValidCorrectLabel(String labelText) {
-        return labelText.equals("Your selection is correct")
-                || labelText.equals("Correct selection");
+        return labelText.equals("Your selection is correct") || labelText.equals("Correct selection");
     }
 
     private String extractAnswerText(Element answerBlock) {

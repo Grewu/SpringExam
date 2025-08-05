@@ -1,10 +1,7 @@
 package com.example.springexam.model.entity;
 
-import com.example.springexam.model.entity.enums.QuestionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,10 +27,6 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "question_type", nullable = false)
-    private QuestionType questionType;
 
     @Lob
     @Column(name = "question_text", nullable = false)

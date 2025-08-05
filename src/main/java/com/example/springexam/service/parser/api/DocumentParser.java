@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DocumentParser {
-    List<ParsedInfo> parse(String url) throws IOException;
+    List<ParsedInfo> parse();
 }
