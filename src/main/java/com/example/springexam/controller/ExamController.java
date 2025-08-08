@@ -1,11 +1,13 @@
 package com.example.springexam.controller;
 
 import com.example.springexam.model.dto.response.ParsedInfo;
+import com.example.springexam.model.xml.Quiz;
 import com.example.springexam.service.api.DataBaseService;
 import com.example.springexam.service.api.QuestionService;
 import com.example.springexam.service.parser.ExamParserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,12 @@ public class ExamController {
     public ResponseEntity<List<ParsedInfo>> getAll() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(questionService.getAllParsedInfo());
+    }
+
+    @GetMapping(value = "/getAllXml", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Quiz> getAllXml() {
+        return ResponseEntity.ok()
+                .body(questionService.getAllMoodleQuiz());
     }
 
     @PostMapping("/reset-db")

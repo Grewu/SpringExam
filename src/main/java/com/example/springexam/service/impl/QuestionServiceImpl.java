@@ -2,7 +2,15 @@ package com.example.springexam.service.impl;
 
 import com.example.springexam.exception.EntityAlreadyExistsException;
 import com.example.springexam.model.dto.response.ParsedInfo;
+import com.example.springexam.model.entity.Answer;
 import com.example.springexam.model.entity.Question;
+import com.example.springexam.model.xml.GeneralFeedback;
+import com.example.springexam.model.xml.MoodelAnswer;
+import com.example.springexam.model.xml.MoodleQuestion;
+import com.example.springexam.model.xml.Name;
+import com.example.springexam.model.xml.Quiz;
+import com.example.springexam.model.xml.Text;
+import com.example.springexam.model.xml.Topic;
 import com.example.springexam.repository.QuestionRepository;
 import com.example.springexam.service.api.AnswerService;
 import com.example.springexam.service.api.ExplanationService;
@@ -59,6 +67,62 @@ public class QuestionServiceImpl implements QuestionService {
                 .stream()
                 .map(this::toParsedInfo)
                 .toList();
+    }
+
+    @Override
+    public Quiz getAllMoodleQuiz() {
+        List<MoodleQuestion> moodelQuestions = questionRepository.findAll()
+                .stream()
+                .map(this::toMoodelQuestion)
+                .toList();
+        return Quiz.builder()
+                .question(moodelQuestions)
+                .build();
+    }
+
+    private MoodleQuestion toMoodelQuestion(Question question) {
+        List<Answer> answers = answerService.getAnswerByQuestionId(question.getId());
+
+        List<MoodelAnswer> moodleAnswers = answers.stream()
+                .map(answer -> MoodelAnswer.builder()
+                        .fraction(answer.getIsCorrect() ? 100 : 0)
+                        .text(answer.getAnswerText())
+                        .build())
+                .toList();
+
+        return MoodleQuestion.builder()
+                .type("multichoice")
+                .name(moodelName())
+                .questionText(moodelQuestionText(question))
+                .answers(moodleAnswers)
+                .generalFeedback(moodelGeneralFeedback(question))
+                .topic(moodelTopic(question))
+                .build();
+    }
+
+    private Topic moodelTopic(Question question) {
+        return Topic.builder()
+                .topic(question.getTopic().getName().name())
+                .build();
+    }
+
+    private Name moodelName() {
+        return Name.builder()
+                .text("name text")
+                .build();
+    }
+
+    private Text moodelQuestionText(Question question) {
+        return Text.builder()
+                .format("html")
+                .text(question.getQuestionText())
+                .build();
+    }
+
+    private GeneralFeedback moodelGeneralFeedback(Question question) {
+        return GeneralFeedback.builder()
+                .text(explanationService.getExplanationContent(question.getId()))
+                .build();
     }
 
     private ParsedInfo toParsedInfo(Question question) {

@@ -1,6 +1,5 @@
 [
   {
-    "url": "https://www.udemy.com/course/spring-professional-certification-6-full-tests-2v0-7222-a/learn/quiz/5845182/result/1645513167",
     "question": "Which of the following libraries are provided by the spring-boot-starter-test ? (select 3)",
     "answer": [
       "Mockito",
