@@ -1,6 +1,6 @@
 package com.example.springexam.service.parser;
 
-import com.example.springexam.model.dto.response.ParsedInfo;
+import com.example.springexam.model.dto.response.html.HtmlParsedResponse;
 import com.example.springexam.model.entity.Answer;
 import com.example.springexam.model.entity.Explanation;
 import com.example.springexam.model.entity.Question;
@@ -13,29 +13,53 @@ import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class HtmlParserService implements ParseService {
+public class HtmlParserService implements ParseService<HtmlParsedResponse, Element> {
+
     private final EntityParser<Topic, Void> topicParser;
     private final EntityParser<Question, Topic> questionParser;
     private final EntityParser<List<Answer>, Question> answerParser;
     private final EntityParser<Explanation, Question> explanationParser;
 
     @Override
-    public ParsedInfo parseHtml(Element container) {
-        Topic topic = topicParser.parseAndSave(container, null);
-        Question question = questionParser.parseAndSave(container, topic);
-        List<Answer> answers = answerParser.parseAndSave(container, question);
-        Explanation explanation = explanationParser.parseAndSave(container, question);
+    public HtmlParsedResponse parseHtml(Element container) {
+        Objects.requireNonNull(container, "Container element cannot be null");
 
-        return ParsedInfo.builder()
+        Topic topic = parseTopic(container);
+        Question question = parseQuestion(container, topic);
+        List<Answer> answers = parseAnswers(container, question);
+        Explanation explanation = parseExplanation(container, question);
+
+        return buildResponse(question, answers, explanation, topic);
+    }
+
+    private Topic parseTopic(Element container) {
+        return topicParser.parseAndSave(container, null);
+    }
+
+    private Question parseQuestion(Element container, Topic topic) {
+        return questionParser.parseAndSave(container, topic);
+    }
+
+    private List<Answer> parseAnswers(Element container, Question question) {
+        return answerParser.parseAndSave(container, question);
+    }
+
+    private Explanation parseExplanation(Element container, Question question) {
+        return explanationParser.parseAndSave(container, question);
+    }
+
+    private HtmlParsedResponse buildResponse(Question question, List<Answer> answers,
+                                             Explanation explanation, Topic topic) {
+        return HtmlParsedResponse.builder()
                 .question(question.getQuestionText())
                 .answer(answers.stream().map(Answer::getAnswerText).toList())
                 .explanation(explanation.getContent())
                 .topic(topic.getName().getDisplayName())
                 .build();
     }
-
 }
