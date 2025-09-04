@@ -7,6 +7,11 @@ import java.util.Arrays;
 @Getter
 public enum TopicType {
   TESTING("Testing"),
+  CONTAINER_ORCHESTRATION("Container Orchestration"),
+  CLOUD_NATIVE_APPLICATION_DELIVERY("Cloud Native Application Delivery"),
+  CLOUD_NATIVE_ARCHITECTURE("Cloud Native Architecture"),
+  CLOUD_NATIVE_OBSERVABILITY("Cloud Native Observability"),
+  KUBERNETES_FUNDAMENTALS("Kubernetes Fundamentals"),
   SPRING_CORE("Spring Core"),
   SECURITY("Security"),
   SPRING_AOP("Spring AOP"),

@@ -1,15 +1,22 @@
 -- Создание пользовательского типа ENUM для тем
 CREATE TYPE topic_type AS ENUM (
-    'ALL_DOMAINS',
     'TESTING',
+    'CONTAINER_ORCHESTRATION',
+    'CLOUD_NATIVE_APPLICATION_DELIVERY',
+    'CLOUD_NATIVE_ARCHITECTURE',
+    'CLOUD_NATIVE_OBSERVABILITY',
+    'KUBERNETES_FUNDAMENTALS',
     'SPRING_CORE',
     'SECURITY',
     'SPRING_AOP',
     'SPRING_MVC',
+    'SPRING_SECURITY',
+    'SPRING_BOOT',
+    'SPRING_BOOT_ACTUATOR',
     'DATA_MANAGEMENT',
     'CONFIGURATION',
     'SPRING_ACTUATOR'
-    );
+);
 
 -- Создаем пользовательский тип ENUM для типов вопросов
 CREATE TYPE question_type AS ENUM (

@@ -37,10 +37,10 @@ public class QuestionServiceImpl implements QuestionService {
             log.error("Question text cannot be null or empty");
             throw new IllegalArgumentException("Question text cannot be null or empty");
         }
-        if (questionRepository.existsByQuestionText(question.getQuestionText())) {
-            log.warn("Question with text '{}' already exists", question.getQuestionText());
-            throw new EntityAlreadyExistsException(Question.class, question.getQuestionText());
-        }
+//        if (questionRepository.existsByQuestionText(question.getQuestionText())) {
+//            log.warn("Question with text '{}' already exists", question.getQuestionText());
+//            throw new EntityAlreadyExistsException(Question.class, question.getQuestionText());
+//        }
         log.debug("Creating question with text: {}", question.getQuestionText());
         return questionRepository.save(question);
     }
