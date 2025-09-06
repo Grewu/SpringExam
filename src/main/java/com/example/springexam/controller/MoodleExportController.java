@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,9 +19,9 @@ public class MoodleExportController {
     private final QuizService quizService;
 
     @GetMapping(value = "/moodle-xml", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Quiz> exportToMoodleXml() {
+    public ResponseEntity<Quiz> exportToMoodleXml(@RequestParam(required = false) String keyword) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(quizService.generateMoodleQuiz());
+                .body(quizService.generateMoodleQuiz(keyword));
     }
 
 }

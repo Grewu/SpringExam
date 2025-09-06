@@ -1,6 +1,5 @@
 package com.example.springexam.service.impl;
 
-import com.example.springexam.exception.EntityAlreadyExistsException;
 import com.example.springexam.model.dto.response.html.HtmlParsedResponse;
 import com.example.springexam.model.entity.Question;
 import com.example.springexam.repository.QuestionRepository;
@@ -9,7 +8,6 @@ import com.example.springexam.service.api.ExplanationService;
 import com.example.springexam.service.api.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,10 +35,6 @@ public class QuestionServiceImpl implements QuestionService {
             log.error("Question text cannot be null or empty");
             throw new IllegalArgumentException("Question text cannot be null or empty");
         }
-//        if (questionRepository.existsByQuestionText(question.getQuestionText())) {
-//            log.warn("Question with text '{}' already exists", question.getQuestionText());
-//            throw new EntityAlreadyExistsException(Question.class, question.getQuestionText());
-//        }
         log.debug("Creating question with text: {}", question.getQuestionText());
         return questionRepository.save(question);
     }

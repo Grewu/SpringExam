@@ -20,7 +20,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class JsoupDocumentLoader implements DocumentLoader {
 
-    @Value("classpath:templates/*.html")
+    @Value("classpath:templates/**/*.html")
     private Resource[] htmlResources;
 
     @Override
