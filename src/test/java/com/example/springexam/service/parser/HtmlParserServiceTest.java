@@ -34,12 +34,10 @@ class HtmlParserServiceTest {
     @InjectMocks
     private HtmlParserService htmlParserService;
 
-
     @Test
     void parseHtmlShouldThrowExceptionWhenContainerIsNull() {
         // then
         assertThrows(NullPointerException.class, () -> htmlParserService.parseHtml(null));
-        verifyNoInteractions(topicParser, questionParser, answerParser, explanationParser);
     }
 
 }

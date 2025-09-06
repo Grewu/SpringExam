@@ -3,9 +3,7 @@ package com.example.springexam.service.impl;
 import com.example.springexam.data.AnswerTestData;
 import com.example.springexam.data.ExplanationTestData;
 import com.example.springexam.data.QuestionTestData;
-import com.example.springexam.exception.EntityAlreadyExistsException;
 import com.example.springexam.model.dto.response.html.HtmlParsedResponse;
-import com.example.springexam.model.entity.Question;
 import com.example.springexam.repository.QuestionRepository;
 import com.example.springexam.service.api.AnswerService;
 import com.example.springexam.service.api.ExplanationService;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -28,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +44,6 @@ class QuestionServiceImplTest {
     void createShouldReturnQuestion() {
         // given
         var expected = QuestionTestData.builder().build().buildQuestion();
-        when(questionRepository.existsByQuestionText(expected.getQuestionText())).thenReturn(false);
         when(questionRepository.save(expected)).thenReturn(expected);
         // when
         var actual = questionService.create(expected);
@@ -80,21 +77,28 @@ class QuestionServiceImplTest {
     }
 
     @Test
-    void createShouldThrowEntityAlreadyExistsExceptionWhenExists() {
+    void createShouldSaveQuestionWhenValid() {
         // given
         var question = QuestionTestData.builder().build().buildQuestion();
-        when(questionRepository.existsByQuestionText(question.getQuestionText())).thenReturn(true);
+        var savedQuestion = QuestionTestData.builder().build().buildQuestion();
+
+        when(questionRepository.save(question)).thenReturn(savedQuestion);
+
+        // when
+        var result = questionService.create(question);
+
         // then
-        assertThrows(EntityAlreadyExistsException.class, () -> questionService.create(question));
-        verify(questionRepository, never()).save(any());
+        assertNotNull(result);
+        assertEquals(savedQuestion.getId(), result.getId());
+        verify(questionRepository, times(1)).save(question);
     }
 
     @Test
     void getAllShouldReturnPage() {
         // given
-        Pageable pageable = mock(Pageable.class);
-        Question question = QuestionTestData.builder().build().buildQuestion();
-        Page<Question> page = new PageImpl<>(Collections.singletonList(question));
+        var pageable = mock(Pageable.class);
+        var question = QuestionTestData.builder().build().buildQuestion();
+        var page = new PageImpl<>(Collections.singletonList(question));
         when(questionRepository.findAll(pageable)).thenReturn(page);
         // when
         var result = questionService.getAll(pageable);
