@@ -38,5 +38,5 @@ public class TopicParser implements EntityParser<Topic, Void> {
         return Optional.ofNullable(container.selectFirst(HtmlSelectors.Topic.PANE))
                 .map(pane -> pane.selectFirst(HtmlSelectors.Topic.NAME))
                 .map(Element::text)
-                .orElse("Topic not found"); }
+                .orElse(TopicType.SQL.getDisplayName()); }
 }

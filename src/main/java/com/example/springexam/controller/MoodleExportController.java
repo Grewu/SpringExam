@@ -2,6 +2,8 @@ package com.example.springexam.controller;
 
 import com.example.springexam.model.dto.response.xml.Quiz;
 import com.example.springexam.service.api.QuizService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +21,9 @@ public class MoodleExportController {
     private final QuizService quizService;
 
     @GetMapping(value = "/moodle-xml", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Quiz> exportToMoodleXml(@RequestParam(required = false) String keyword) {
+    public ResponseEntity<Quiz> exportToMoodleXml(
+            @Parameter(schema = @Schema(type = "string", allowableValues = {"java", "spring", "k8s", "sql"}))
+            @RequestParam(required = false) String keyword) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(quizService.generateMoodleQuiz(keyword));
     }
