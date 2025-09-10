@@ -1,7 +1,7 @@
 package com.example.springexam.service.loader;
 
 import com.example.springexam.exception.DocumentLoadException;
-import org.jsoup.nodes.Document;
+import com.example.springexam.model.dto.response.html.DocumentWithFilename;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,8 +14,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class JsoupDocumentLoaderTest {
@@ -98,9 +101,9 @@ class JsoupDocumentLoaderTest {
     }
 
 
-    private boolean containsText(List<Document> docs, String text) {
+    private boolean containsText(List<DocumentWithFilename> docs, String text) {
         return docs.stream()
-                .anyMatch(doc -> doc.body().text().contains(text));
+                .anyMatch(doc -> doc.document().body().text().contains(text));
     }
 
 }

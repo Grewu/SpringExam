@@ -16,13 +16,14 @@ spring:
     password:
     enabled: true
 
-html:
-  resources:
-    paths:
-      - "classpath:templates/**"
-      - "classpath:java/**"
-      - "classpath:kubernetes/**"
-      - "classpath:spring/**"
+#html:
+#  resources:
+#    paths:
+#      - "classpath:docker/**"
+#      - "classpath:java/**"
+#      - "classpath:kuber/**"
+#      - "classpath:spring/**"
+#      - "classpath:sql/**"
 
 springdoc:
   api-docs:

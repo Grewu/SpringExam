@@ -1,5 +1,6 @@
 package com.example.springexam.service.parser;
 
+import com.example.springexam.model.dto.response.html.DocumentWithFilename;
 import com.example.springexam.model.dto.response.html.HtmlParsedResponse;
 import com.example.springexam.service.loader.api.DocumentLoader;
 import com.example.springexam.service.parser.api.DocumentParser;
@@ -7,7 +8,6 @@ import com.example.springexam.service.parser.api.ParseService;
 import com.example.springexam.utils.HtmlSelectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +23,16 @@ public class ExamParserService implements DocumentParser {
 
     @Override
     public List<HtmlParsedResponse> parse() {
-        List<Document> documents = documentLoader.loadAllDocuments();
+        List<DocumentWithFilename> documents = documentLoader.loadAllDocuments();
         return parseDocuments(documents);
     }
 
-    private List<HtmlParsedResponse> parseDocuments(List<Document> documents) {
+    private List<HtmlParsedResponse> parseDocuments(List<DocumentWithFilename> documents) {
         return documents.stream()
-                .flatMap(doc -> doc.select(HtmlSelectors.Question.CONTAINER).stream())
-                .map(htmlParser::parseHtml)
+                .flatMap(docWithName -> docWithName.document()
+                        .select(HtmlSelectors.Question.CONTAINER)
+                        .stream()
+                        .map(container -> htmlParser.parseHtml(container, docWithName.filename())))
                 .peek(info -> log.debug("Parsed question: {}", info.question()))
                 .toList();
     }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -38,17 +38,16 @@ public class ExplanationParser implements EntityParser<Explanation, Question> {
     }
 
     private String extractExplanationText(Element container) {
-        Element explContainer = container.selectFirst(HtmlSelectors.Explanation.CONTAINER);
-        if (explContainer == null) {
-            log.warn("No explanation container found");
-            return null;
-        }
-        Element details = explContainer.selectFirst(HtmlSelectors.Explanation.DETAILS);
-        String text = details != null ? details.text() : explContainer.text();
-        if (text.trim().isEmpty()) {
-            log.warn("No explanation text found");
-            return null;
-        }
-        return text;
+        return Optional.ofNullable(container.selectFirst(HtmlSelectors.Explanation.CONTAINER))
+                .map(explContainer -> {
+                    Element details = explContainer.selectFirst(HtmlSelectors.Explanation.DETAILS);
+                    return details != null ? details.text() : explContainer.text();
+                })
+                .map(String::trim)
+                .filter(text -> !text.isEmpty())
+                .orElseGet(() -> {
+                    log.warn("No explanation text found in container");
+                    return "No explanation available";
+                });
     }
 }

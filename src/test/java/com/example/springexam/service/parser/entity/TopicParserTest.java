@@ -13,12 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -63,7 +60,7 @@ class TopicParserTest {
     }
 
     @Test
-    void parseAndSaveShouldThrowIllegalArgumentExceptionWhenContainerIsNull() {
+    void parseAndSaveShouldThrowNullPointerExceptionWhenContainerIsNull() {
         // when & then
         var exception = assertThrows(NullPointerException.class,
                 () -> topicParser.parseAndSave(null, null));
@@ -72,25 +69,47 @@ class TopicParserTest {
     }
 
     @Test
-    void parseAndSaveShouldThrowWhenTopicTextNotFound() {
+    void parseAndSaveShouldFallbackToFilenameWhenTopicPaneNotFound() {
         // given
+        var fileName = "docker.html";
         when(container.selectFirst(HtmlSelectors.Topic.PANE)).thenReturn(null);
 
-        // when & then
-        assertThrows(NoSuchElementException.class,
-                () -> topicParser.parseAndSave(container, null));
-        verifyNoInteractions(topicService);
+        var expected = TopicTestData.builder().build().buildTopic();
+
+        when(topicService.create(ArgumentMatchers.argThat(t ->
+                t.getName() == TopicType.DOCKER &&
+                        t.getDescription().equals("description") &&
+                        t.getId() == null
+        ))).thenReturn(expected);
+
+        // when
+        var actual = topicParser.parseAndSave(container, fileName);
+
+        // then
+        assertEquals(expected, actual);
+        verify(topicService).create(any(Topic.class));
     }
 
     @Test
-    void parseAndSaveShouldThrowWhenInnerSelectorNotFound() {
+    void parseAndSaveShouldFallbackToFilenameWhenTopicNameNotFound() {
         // given
+        var fileName = "oracle.html";
         when(container.selectFirst(HtmlSelectors.Topic.PANE)).thenReturn(pane);
         when(pane.selectFirst(HtmlSelectors.Topic.NAME)).thenReturn(null);
 
-        // when & then
-        assertThrows(NoSuchElementException.class,
-                () -> topicParser.parseAndSave(container, null));
-        verifyNoInteractions(topicService);
+        var expected = TopicTestData.builder().build().buildTopic();
+
+        when(topicService.create(ArgumentMatchers.argThat(t ->
+                t.getName() == TopicType.SQL &&
+                        t.getDescription().equals("description") &&
+                        t.getId() == null
+        ))).thenReturn(expected);
+
+        // when
+        var actual = topicParser.parseAndSave(container, fileName);
+
+        // then
+        assertEquals(expected, actual);
+        verify(topicService).create(any(Topic.class));
     }
 }

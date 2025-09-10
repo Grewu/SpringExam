@@ -20,16 +20,15 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class HtmlParserService implements ParseService<HtmlParsedResponse, Element> {
 
-    private final EntityParser<Topic, Void> topicParser;
+    private final EntityParser<Topic, String> topicParser;
     private final EntityParser<Question, Topic> questionParser;
     private final EntityParser<List<Answer>, Question> answerParser;
     private final EntityParser<Explanation, Question> explanationParser;
-
     @Override
-    public HtmlParsedResponse parseHtml(Element container) {
+    public HtmlParsedResponse parseHtml(Element container,String fileName) {
         Objects.requireNonNull(container, "Container element cannot be null");
 
-        Topic topic = parseTopic(container);
+        Topic topic = parseTopic(container,fileName);
         Question question = parseQuestion(container, topic);
         List<Answer> answers = parseAnswers(container, question);
         Explanation explanation = parseExplanation(container, question);
@@ -37,8 +36,8 @@ public class HtmlParserService implements ParseService<HtmlParsedResponse, Eleme
         return buildResponse(question, answers, explanation, topic);
     }
 
-    private Topic parseTopic(Element container) {
-        return topicParser.parseAndSave(container, null);
+    private Topic parseTopic(Element container, String fileName) {
+        return topicParser.parseAndSave(container, fileName);
     }
 
     private Question parseQuestion(Element container, Topic topic) {

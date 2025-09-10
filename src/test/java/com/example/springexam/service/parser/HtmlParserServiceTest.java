@@ -37,7 +37,7 @@ class HtmlParserServiceTest {
     @Test
     void parseHtmlShouldThrowExceptionWhenContainerIsNull() {
         // then
-        assertThrows(NullPointerException.class, () -> htmlParserService.parseHtml(null));
+        assertThrows(NullPointerException.class, () -> htmlParserService.parseHtml(null,null));
     }
 
 }

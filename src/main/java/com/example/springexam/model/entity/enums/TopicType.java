@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Getter
 public enum TopicType {
+  DOCKER("Docker", Category.DOCKER),
   TESTING("Testing", Category.SPRING),
   CONTAINER_ORCHESTRATION("Container Orchestration", Category.KUBERNETES),
   CLOUD_NATIVE_APPLICATION_DELIVERY("Cloud Native Application Delivery", Category.KUBERNETES),
@@ -167,15 +168,18 @@ public enum TopicType {
       return null;
     }
     String normalizedInput = displayName.trim().toLowerCase();
+
     return Arrays.stream(values())
             .filter(topic -> topic.displayName.toLowerCase().equals(normalizedInput) ||
-                    topic.name().toLowerCase().equals(normalizedInput) ||
-                    topic.displayName.toLowerCase().contains(normalizedInput))
+                    topic.name().toLowerCase().equals(normalizedInput))
             .findFirst()
-            .orElseGet(() -> {
-              log.warn("Unknown topic type: '{}'. Defaulting to SQL.", displayName);
-              return SQL;
-            });
+            .orElseGet(() -> Arrays.stream(values())
+                    .filter(topic -> topic.displayName.toLowerCase().contains(normalizedInput))
+                    .findFirst()
+                    .orElseGet(() -> {
+                      log.warn("Unknown topic type: '{}'. Defaulting to SQL.", displayName);
+                      return SQL;
+                    }));
   }
 
   public static Set<TopicType> findByKeyword(String keyword) {
@@ -200,10 +204,15 @@ public enum TopicType {
     return switch (keyword) {
       case "java" -> isJavaRelated();
       case "spring" -> isSpringRelated();
-      case "k8s" -> isKubernetesRelated();
-      case "sql" -> isDatabaseRelated();
+      case "k8s", "kubernetes" -> isKubernetesRelated();
+      case "sql", "oracle" -> isDatabaseRelated();
+      case "docker" -> isDockerRelated();
       default -> false;
     };
+  }
+
+  private boolean isDockerRelated() {
+    return category == Category.DOCKER;
   }
 
   private boolean isJavaRelated() {
@@ -223,6 +232,7 @@ public enum TopicType {
   }
 
   public enum Category {
+    DOCKER,
     JAVA,
     SPRING,
     KUBERNETES,

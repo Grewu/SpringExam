@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
@@ -97,7 +96,6 @@ class ExplanationParserTest {
 
         // then
         assertNotNull(actual);
-        assertNull(actual.getContent());
         assertEquals(question, actual.getQuestion());
     }
 

@@ -1,5 +1,6 @@
 package com.example.springexam.service.parser;
 
+import com.example.springexam.model.dto.response.html.DocumentWithFilename;
 import com.example.springexam.model.dto.response.html.HtmlParsedResponse;
 import com.example.springexam.service.loader.api.DocumentLoader;
 import com.example.springexam.service.parser.api.ParseService;
@@ -18,7 +19,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ExamParserServiceTest {
@@ -28,6 +31,7 @@ class ExamParserServiceTest {
     private static final String QUESTION_2 = "Question 2";
     private static final String QUESTION_3 = "Question 3";
     private static final String HTML = "<div>No questions</div>";
+    private static final String FILENAME = "test.html";
 
     @Mock
     private DocumentLoader documentLoader;
@@ -61,8 +65,8 @@ class ExamParserServiceTest {
     @Test
     void shouldReturnParsedResponsesWhenDocumentsContainQuestionContainers() {
         //given
-        var documents = List.of(mockDocument);
-        when(documentLoader.loadAllDocuments()).thenReturn(documents);
+        var docWithFilename = new DocumentWithFilename(mockDocument, FILENAME);
+        when(documentLoader.loadAllDocuments()).thenReturn(List.of(docWithFilename));
 
         //when
         var result = examParserService.parse();
@@ -80,9 +84,11 @@ class ExamParserServiceTest {
                         String.format(QUESTION_CONTAINER_HTML, QUESTION_2)
         );
         var doc2 = Jsoup.parse(String.format(QUESTION_CONTAINER_HTML, QUESTION_3));
-        var documents = List.of(doc1, doc2);
-        when(documentLoader.loadAllDocuments()).thenReturn(documents);
 
+        var docWithFilename1 = new DocumentWithFilename(doc1, "file1.html");
+        var docWithFilename2 = new DocumentWithFilename(doc2, "file2.html");
+
+        when(documentLoader.loadAllDocuments()).thenReturn(List.of(docWithFilename1, docWithFilename2));
         //when
         var result = examParserService.parse();
 
@@ -95,7 +101,8 @@ class ExamParserServiceTest {
     void shouldReturnEmptyListWhenNoQuestionContainersFound() {
         //given
         var emptyDoc = Jsoup.parse(HTML);
-        when(documentLoader.loadAllDocuments()).thenReturn(List.of(emptyDoc));
+        var docWithFilename = new DocumentWithFilename(emptyDoc, FILENAME);
+        when(documentLoader.loadAllDocuments()).thenReturn(List.of(docWithFilename));
 
         //when
         var result = examParserService.parse();
@@ -104,5 +111,15 @@ class ExamParserServiceTest {
         assertTrue(result.isEmpty());
         verify(documentLoader).loadAllDocuments();
         verifyNoInteractions(htmlParser);
+    }
+
+    @Test
+    void shouldPassCorrectFilenameToParser() {
+        //given
+        var docWithFilename = new DocumentWithFilename(mockDocument, "specific_file.html");
+        when(documentLoader.loadAllDocuments()).thenReturn(List.of(docWithFilename));
+
+        //when
+        examParserService.parse();
     }
 }
