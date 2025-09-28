@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: register-app-service
+  name: spring-exam-service
   labels:
-    app: register-app 
+    app: spring-exam
 spec:
   selector:
-    app: register-app
+    app: spring-exam
 
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 8181
+      targetPort: 8111
 
   type: LoadBalancer
