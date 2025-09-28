@@ -10,6 +10,6 @@ spec:
 
   ports:
     - port: 8181
-      targetPort: 8111
+      targetPort: 9011
 
   type: NodePort
