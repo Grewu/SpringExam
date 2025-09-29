@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring-exam
-          image: grewu/spring-exam-app:1.0.0-28
+          image: grewu/spring-exam-app:test
           resources:
             limits:
               memory: "256Mi"
